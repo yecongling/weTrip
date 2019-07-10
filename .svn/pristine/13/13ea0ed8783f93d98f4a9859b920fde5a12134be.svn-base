@@ -1,0 +1,75 @@
+package com.foo.wetrip.service;
+
+import com.foo.wetrip.bean.Picture;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.bean.ScenicType;
+import com.foo.wetrip.util.ScenicUtil;
+
+import java.util.List;
+
+public interface ScenicService {
+    /**
+     * 根据产品ID查询产品详情
+     * @param ScenicId
+     * @return
+     */
+    Scenic getScenicById(Integer ScenicId);
+
+    /**
+     * 所有的景点信息,这里需要通过数据的封装来保证数据的完整性
+     * @return
+     */
+    List<ScenicUtil> selectAllScenic();
+
+
+
+    /**
+     * 根据主键更改景点的信息
+     * @param scenicId 景点的编号
+     */
+    void updateScenicStatus(Integer scenicId);
+
+    /**
+     * 根据景点的编号查询封装好的实体
+     * @param scenicId 景点的编号
+     * @return 封装好的实体
+     */
+    ScenicUtil selectByScenicId(Integer scenicId);
+
+    /**
+     * 根据景点的编号来更改景点的数据
+     * @param scenicId 景点编号
+     * @param scenicName 景点名字
+     * @param address 景点地址
+     * @param price 景点价格
+     * @param description 景点描述
+     */
+    void updateScenic(Integer scenicId,String scenicName,String address,String price,String description);
+
+
+
+    /**
+     * 得到图片
+     * @param pictureId
+     * @return
+     */
+    Picture getPicture(Integer pictureId);
+
+    /**
+     * 查询所有的景点的类型
+     * @return
+     */
+    List<ScenicType> selectAllScenicType();
+
+    /**
+     * 插入景点信息
+     * @param scenicName 景点名字
+     * @param address 景点地址
+     * @param scenicTypeId 景点类型编号
+     * @param price 景点票价
+     * @param description 景点描述
+     * @param img 图片名字
+     */
+    void insertScenic(String scenicName,String address,Integer scenicTypeId,String price,String description,String img);
+
+}

@@ -1,0 +1,642 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>旅客信息填写</title>
+    <link rel="shortcut icon" href="<%=request.getContextPath()%>/static/img/logo01.png">
+    <!-- Bootstrap CSS -->
+    <link href="<%=request.getContextPath()%>/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <style>
+        .big {
+            border: 1px #000 solid;
+            width: 900px;
+
+            margin-top: 20px;
+        }
+
+        .big_son {
+            padding-left: 20px;
+        }
+
+        .zhifutishi {
+            border: 1px orange solid;
+            background-color: bisque;
+            width: 900px;
+            padding-left: 20px;
+            margin-top: 20px;
+        }
+
+        .yuding {
+            margin-bottom: 20px;
+        }
+
+        .pay {
+            width: 900px;
+            margin-top: 20px;
+            height: 40px;
+            font-size: 20px;
+
+        }
+
+        .main {
+            margin-left: 50px;
+        }
+
+        .depart_detail {
+            border-bottom: papayawhip 1px solid;
+            width: 800px;
+
+        }
+
+        .people_input {
+            border-bottom: papayawhip 1px solid;
+            width: 800px;
+            padding-left: 20px;
+        }
+
+        .tishi {
+            color: gray;
+        }
+
+        .foot {
+            border: 1px white solid;
+            width: 900px;
+            padding-left: 20px;
+            margin-top: 20px;
+            margin-bottom: 100px;
+        }
+
+        .copyright {
+            text-align: center;
+        }
+
+
+        .biaoti {
+            clear: left;
+            width: 900px;
+            font-size: 20px;
+            background: rgb(211, 199, 199);
+            line-height: 50px;
+            padding-left: 20px;
+        }
+
+        .jingqu {
+            padding-left: 20px;
+        }
+
+        .form-group {
+            padding-left: 20px;
+        }
+
+        .chuxing {
+            margin-top: 10px;
+        }
+
+        #num #time #phone #lianxi #lvke_name1 {
+            color: red;
+            list-style: none;
+        }
+
+        p {
+            color: red;
+        }
+
+        .zhifu {
+            float: right;
+
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div>
+    <img class="img-responsive" src="<%=request.getContextPath()%>/static/img/index/index001.jpg">
+</div>
+<div class="container">
+    <nav class="navbar navbar-default"
+         style="background-color: rgba(215,238,250,0.91);font-size: 16px;font-weight: bold">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="<%=request.getContextPath()%>/index">首页</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">公告</a></li>
+                    <li><a href="#">酒店</a></li>
+                    <li class="dropdown" id="dropdown01">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false">旅游 <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="dropdown-menu01"
+                            style="display: none;background-color: rgb(213, 255, 239)">
+                            <li><a href="#">周边游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">境内游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">组团游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">自驾游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">更多</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">公告</a></li>
+                    <li><a href="#">公告</a></li>
+                    <li><a href="#">公告</a></li>
+                    <li><a href="#">公告</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" id="dropdown02">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false">用户中心 <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="dropdown-menu02"
+                            style="display: none;background-color: rgb(213, 255, 239)">
+                            <li><a href="#">我的信息</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<%=request.getContextPath()%>/myOrder">我的订单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<%=request.getContextPath()%>/favorite">我的收藏</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="<%=request.getContextPath()%>/preLogin">登录</a></li>
+                    <li><a href="<%=request.getContextPath()%>/preRegister">注册</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <form class="time_add" method="POST" role="form">
+        <div class="main">
+            <div class="basefix">
+                <div class="big">
+                    <h2 class="jingqu">景区</h2>
+                    <h5 class="depart_detail"></h5>
+                    <div class="big_son">
+                        <div class="yuding">
+                            <h3>${scenic.scenicName}</h3>
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <td><span class="tishi">所在地:&nbsp;&nbsp;</span>${scenic.address}</td>
+                                </tr>
+                                <tr>
+                                    <td><span
+                                            class="tishi">价格:&nbsp;&nbsp;</span>${scenic.price}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span
+                                            class="tishi">景区描述:&nbsp;&nbsp;</span>${scenic.description}
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <noscript></noscript>
+                <div class="big">
+                    <div class="biaoti">请选择出行时间和人数</div>
+                    <div class="big_son">
+                        <ul class="chuxing">
+                            <li>
+                                <label class="product_label">出行人数</label>
+                                <span class="frm_required">*</span>
+                                <input type="text" name="tripNum" id="tripNum" placeholder="请输入出行人数"
+                                       onblur="validateNum()" data-valid="false">
+                                <p id="num"></p>
+                            </li>
+                            <li>
+                                <label class="product_label">出行时间</label>
+                                <span class="frm_required">*</span>
+                                <input type="text" id="test1" name="tripTime" onblur="validateTime()">
+                                <p id="time"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="big">
+                    <div class="biaoti">联系人信息</div>
+                    <div class="big_son">
+				<span class="tishi">
+					<h5>为方便携程及时与您联系，请准确填写联系人信息（手机号码和Email）</h5>
+				</span>
+
+                        <div class="">
+                            <ul class="">
+                                <li>
+                                    <label class="product_label">姓名</label>
+                                    <span class="frm_required">*</span>
+                                    <input type="text" value="" name="username" placeholder="请输入联系人姓名"
+                                           id="lian_name" onblur="validateLian()" data-valid="false"
+                                           data-message="请填写姓名"
+                                           data-container="uid-0">
+                                    <p id="lianxi"></p>
+                                </li>
+                                <li>
+                                    <label class="product_label">手机号码</label>
+                                    <span class="frm_required">*</span>
+                                    <select>
+                                        <option value="86" style="display: none;">中国大陆86</option>
+                                    </select>
+                                    <input type="text" placeholder="必填，用于紧急联系" name="lian_phone"
+                                           onblur="validatePhone()" id="lian_phone" data-valid="false"
+                                           data-message="请填写手机号码" data-container="uid-1">
+                                    <p id="phone"></p>
+                                </li>
+                                <li>
+                                    <label class="product_label">Email</label>
+                                    <input type="text" value="" placeholder="用于接收订单确认信息" name="email"
+                                           id="email" data-valid="" data-message="请填写电子邮箱" data-container="uid-2"
+                                           autocomplete="off">
+                                    <span class="tishi">
+									<h5>如不填写，也可至订单详情中查看相关信息。</h5>
+								</span>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                </div>
+                <noscript></noscript>
+                <div class="big">
+                    <div class="biaoti">旅客信息</div>
+                    <div class="big_son">
+                        <div class="little_son">
+                            <div class="people_input">
+                                <h4>
+                                    <div>旅客</div>
+                                    <div><span class="adult">成人</span></div>
+                                </h4>
+                                <h5><span class="tishi">为了您能顺利出行，请务必确认所填姓名、性别与所持证件一致</span></h5>
+                                <ul class="input_box">
+                                    <li><label class="">中文姓名</label>
+                                        <span class="frm_required">*</span>
+                                        <input type="text" value="" placeholder="与证件姓名一致" name="passengerName"
+                                               onblur="validateLvke()"
+                                               id="name1" data-valid="false" data-message="请填写中文姓名"
+                                               data-container="uid-4">
+                                        <p id="lvke_name1"></p>
+                                    </li>
+                                    <li><label>性别</label>
+                                        <span class="frm_required">*</span>
+                                        <select name="gender">
+                                            <option value="0"></option>
+                                            <option value="男">男</option>
+                                            <option value="女">女</option>
+                                        </select>
+                                    </li>
+                                    <li><label class="product_label">证件类型</label><span class="frm_required">*</span>
+                                        <select>
+                                            <option value="1">身份证</option>
+                                            <option value="3">港澳通行证</option>
+                                            <option value="4">港澳台居民居住证</option>
+                                        </select>
+                                        <input type="text" name="idCard" placeholder="证件号码" data-valid="false"
+                                               id="idCard" data-message="请填写身份证号码" data-container="uid-5">
+                                    </li>
+                                    <li><label>手机号码</label><span>*</span>
+                                        <select>
+                                            <option value="86">中国大陆86</option>
+                                        </select>
+                                        <input type="tel" id="phoneNum" name="phoneNum" placeholder="境内11位号码"
+                                               data-valid="false"
+                                               data-message="请至少输入一位出行旅客的手机号码">
+                                        <span class="tishi">请至少输入一位出行旅客的手机号码.若和联系人是一人可忽略重复信息</span>
+                                    </li>
+                                </ul>
+                                <div class="form-group">
+                                    <button id="people_add" type="button" class="btn btn-primary">添加新旅客</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="big_son">
+                        <h5>因服务能力有限，请您核实以下情况，以免造成出行不便。</h5>
+                        <h5>★18岁以下未成年人需要至少一名家长或成年旅客全程陪同</h5>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div class="pay">
+                <button class="btn btn-primary haha" href=""><b>上一步</b></button>&nbsp;&nbsp;&nbsp;
+                <button id="time_save" type="button" onclick=" return validateForm()" class="btn btn-danger"
+                        style="float:right">确认去支付
+                </button>
+            </div>
+            <div class="zhifutishi">
+                <h6>*&nbsp;订单一经提交，我们将立即操作扣款。</h6>
+                <h6>*&nbsp;若现在完成预订，订单预计会在20分钟内确认结果。</h6>
+            </div>
+            <div>
+                <div class="big">
+                    <div class="biaoti">预订须知</div>
+                    <div class="big_son">
+                        <div class="depart_detail">
+                            <h5><b>出行须知</b></h5>
+                            <h5>* 注意安全 </h5>
+                        </div>
+                        <div class="depart_detail">
+                            <h5>
+                                <span><b>特别提示</b></span>
+                            </h5>
+                            <div>
+                                &nbsp;<dfn>*</dfn>&nbsp;注意安全
+                            </div>
+                            <div>
+                                &nbsp;<dfn>*</dfn>&nbsp;注意安全
+                            </div>
+                            <div>
+                                &nbsp;<dfn>*</dfn>&nbsp;注意安全
+                            </div>
+                        </div>
+                        <div>
+                            <h5>
+                                <span><b>酒店特别提示</b></span>
+                            </h5>
+                            <div>
+                                &nbsp;<dfn>*</dfn>&nbsp;酒店千万个,安全第一条;安全不规范,亲人两行泪.
+                            </div>
+                        </div>
+                        <h5 class="depart_detail"></h5>
+                    </div>
+                </div>
+            </div>
+            <noscript></noscript>
+            <div class="foot">
+                <h5 class="copyright">
+                    Copyright©2019, weTrip.com. All rights reserved. | ICP证：川00-00000001</h5>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--引入日期插件-->
+<script src="<%=request.getContextPath() %>/static/layDate/laydate/laydate.js"></script>
+<script>
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#test1' //指定元素
+    });
+</script>
+<!-- jQuery -->
+<script src="<%=request.getContextPath()%>/static/js/jquery-3.3.1.js"></script>
+<!-- Bootstrap JavaScript -->
+<script src="<%=request.getContextPath()%>/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    // 追加旅客
+    var peopleInputHtml = '<div class="people_input">\n' +
+        '                    <h4>\n' +
+        '                        <div>旅客<span class="peopleNum"></span></div>\n' +
+        '                        <div><span class="adult">成人</span></div>\n' +
+        '                    </h4>\n' +
+        '                    <ul class="input_box">\n' +
+        '                        <li><label class="">中文姓名</label>\n' +
+        '                            <span class="frm_required">*</span>\n' +
+        '                            <input type="text" id="name" placeholder="与证件姓名一致" name="passengerName" data-valid="false" data-message="请填写中文姓名" data-container="uid-4">\n' +
+        '                        </li>\n' +
+        '                       <li><label >性别</label>\n' +
+        '                            <span class="frm_required">*</span>\n' +
+        '                            <select name="gender">\n' +
+        '                              <option value="0" ></option>\n' +
+        '                              <option value="男">男</option>\n' +
+        '                              <option value="女">女</option>\n' +
+        '                            </select>\n' +
+        '                        </li>\n' +
+        '                        <li><label  class="product_label">证件类型</label><span class="frm_required">*</span>\n' +
+        '                            <select>\n' +
+        '                                <option value="1">身份证</option>\n' +
+        '                                <option value="3">港澳通行证</option>\n' +
+        '                                <option value="4">港澳台居民居住证</option>\n' +
+        '                            </select>\n' +
+        '                            <input type="text" name="idCard" id="idCard" placeholder="证件号码" data-valid="false" data-message="请填写身份证号码" data-container="uid-5">\n' +
+        '                        </li>\n' +
+        '                        <li><label>手机号码</label><span>*</span>\n' +
+        '                            <select>\n' +
+        '                                <option value="86" style="display: none;">中国大陆86</option>\n' +
+        '                            </select>\n' +
+        '                            <input type="tel" name="phoneNum" id="phoneNum" placeholder="境内11位号码" data-valid="false" data-message="请至少输入一位出行旅客的手机号码">\n' +
+        '                            <span class="tishi">请至少输入一位出行旅客的手机号码.若和联系人是一人可忽略号码</span>\n' +
+        '                        </li>\n' +
+        '                    </ul>\n' +
+        '                </div>';
+
+
+    $("#people_add").click(function () {
+        $(".little_son").append($(peopleInputHtml));
+    });
+
+    // 表单提交
+    $("#time_save").click(function () {
+        $.ajax({
+            url: "<%=request.getContextPath()%>/traveler",
+            type: "post",
+            data: $(".time_add").serialize(),
+            dataType: "json",
+            success: function (resp) {
+                window.location.href = "<%=request.getContextPath()%>/goConfirm/${scenic.scenicId}";
+            }
+        });
+    });
+
+    //验证出行人数
+    function validateNum() {
+        var num = document.getElementById("tripNum");
+        if (document.getElementById("error_num") != null)
+            document.getElementById("error_num").remove();
+        if (num.value.trim().length == 0) {
+            var error_num = document.createElement("li");
+            error_num.id = "error_num";
+            error_num.innerHTML = "出行人数必填";
+            document.getElementById("num").appendChild(error_num);
+            return false;
+        }
+        return true;
+    }
+
+    //验证出行时间
+    function validateTime() {
+        var time = document.getElementById("test1");
+        if (document.getElementById("error_time") != null)
+            document.getElementById("error_time").remove();
+        if (time.value.trim().length == 0) {
+            var error_time = document.createElement("li");
+            error_time.id = "error_time";
+            error_time.innerHTML = "出行时间必填";
+            document.getElementById("time").appendChild(error_time);
+            return false;
+        }
+        return true;
+    }
+
+    //验证联系人姓名
+    function validateLian() {
+        var lian = document.getElementById("lian_name");
+        if (document.getElementById("error_lian") != null)
+            document.getElementById("error_lian").remove();
+        if (lian.value.trim().length == 0) {
+            var error_lian = document.createElement("li");
+            error_lian.id = "error_lian";
+            error_lian.innerHTML = "联系人必填";
+            document.getElementById("lianxi").appendChild(error_lian);
+            return false;
+        }
+        return true;
+    }
+
+    //验证联系人电话
+    function validatePhone() {
+        var phone = document.getElementById("lian_phone");
+        if (document.getElementById("error_phone") != null)
+            document.getElementById("error_phone").remove();
+        if (phone.value.trim().length == 0) {
+            var error_phone = document.createElement("li");
+            error_phone.id = "error_phone";
+            error_phone.innerHTML = "联系人电话必填";
+            document.getElementById("phone").appendChild(error_phone);
+            return false;
+        }
+
+        return true;
+    }
+
+    //验证旅客姓名
+    function validateLvke() {
+        var name = document.getElementById("name1");
+        if (document.getElementById("error_name1") != null)
+            document.getElementById("error_name1").remove();
+        if (name.value.trim().length == 0) {
+            var error_name1 = document.createElement("li");
+            error_name1.id = "error_name1";
+            error_name1.innerHTML = "旅客姓名必填";
+            document.getElementById("lvke_name1").appendChild(error_name1);
+            return false;
+        }
+        return true;
+    }
+
+    //验证整个表单
+    function validateForm() {
+        var valid = true;
+        valid = validateNum() && valid;
+        valid = validateTime() && valid;
+        valid = validateLian() && valid;
+        valid = validatePhone() && valid;
+        valid = validateLvke() && valid;
+        return valid;
+    }
+
+    // $("#idCard").blur(function () {   //输入框失去焦点的时候执行，form:input获取表格的输入框
+    //     // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
+    //     var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+    //     var card =  document.getElementById('idCard').value;
+    //     if(card.value === ""){ //输入不能为空
+    //         alert("输入不能为空!");
+    //         return false;
+    //     }else if(reg.test(card) === false)
+    //     {
+    //         alert("身份证输入不合法");
+    //         return  false;
+    //     }
+    // });
+    $("#lian_phone").blur(function () {
+        // var $parent = $(this).parent();
+        var phone = document.getElementById('lian_phone').value;
+        if (!(/^1[34578]\d{9}$/.test(phone))) {
+            var error_phone = document.createElement("li");
+            error_phone.id = "error_phone";
+            error_phone.innerHTML = "电话格式错误";
+            document.getElementById("phone").appendChild(error_phone);
+            return false;
+        }
+    });
+    // $("#phoneNum").blur(function () {   //输入框失去焦点的时候执行，form:input获取表格的输入框
+    //     // var $parent = $(this).parent();
+    //     var phone = document.getElementById('phoneNum').value;
+    //     if(phone.value === ""){ //输入不能为空
+    //         alert("输入不能为空!");
+    //         return false;
+    //     }else if(!(/^1[34578]\d{9}$/.test(phone))){
+    //         alert("旅客手机号码有误，请重填");
+    //         return false;
+    //     }
+    // });
+    // $("#name").blur(function () {   //输入框失去焦点的时候执行，form:input获取表格的输入框
+    //
+    //     var name = document.getElementById('name').value;
+    //     //国人姓名在2-4位
+    //     var regName =/^[\u4e00-\u9fa5]{2,4}$/;
+    //     if(name.value === ""){ //输入不能为空
+    //         alert("输入不能为空!");
+    //         return false;
+    //     }else if(!regName.test(name)){
+    //         alert('真实姓名填写有误');
+    //         return false;
+    //     }
+    // });
+    // $("#lian_name").blur(function () {   //输入框失去焦点的时候执行，form:input获取表格的输入框
+    //
+    //     var lian_name = document.getElementById('lian_name').value;
+    //     //国人姓名在2-4位
+    //     var regName =/^[\u4e00-\u9fa5]{2,4}$/;
+    //     if(lian_name.value === ""){ //输入不能为空
+    //         alert("输入不能为空!");
+    //         return false;
+    //     }else if(!regName.test(lian_name)){
+    //         alert('真实姓名填写有误');
+    //         return false;
+    //     }
+    // });
+    // $("#email").blur(function () {   //输入框失去焦点的时候执行，form:input获取表格的输入框
+    //
+    //     var email = document.getElementById('email').value;
+    //     var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
+    //
+    //     if(email.value === ""){ //输入不能为空
+    //         alert("输入不能为空!");
+    //         return false;
+    //     }else if(!reg.test(email.value)){ //正则验证不通过，格式不对
+    //         alert("验证不通过!");
+    //         return false;
+    //     }else{
+    //
+    //         return true;
+    //     }
+    // });
+
+
+</script>
+
+<!--引入自定义的js文件-->
+<script src="<%=request.getContextPath()%>/static/js/main.js"></script>
+<script src="<%=request.getContextPath()%>/static/js/rollOfIndex.js"></script>
+</body>
+
+</html>

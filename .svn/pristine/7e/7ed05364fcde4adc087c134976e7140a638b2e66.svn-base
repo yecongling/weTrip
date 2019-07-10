@@ -1,0 +1,50 @@
+package com.foo.wetrip.controller;
+
+
+import com.foo.wetrip.bean.TeamTicket;
+import com.foo.wetrip.service.TeamTicketService;
+import com.foo.wetrip.util.Msg;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+@Controller
+public class IntoTicketController {
+    @Autowired
+    TeamTicketService teamTicketService;
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+
+
+    @RequestMapping(value = "/ticketSearch")
+    public String intoSearch() {
+        return "TicketSearch";
+    }
+
+
+    @RequestMapping(value = "/teamTicket")
+    public String teamTicket() {
+        return "teamTicket";
+    }
+
+    @RequestMapping(value = "/saveTeamTicket", method = RequestMethod.POST)
+    @ResponseBody
+    public Msg message(TeamTicket teamTicket) {
+        teamTicketService.saveTeamTicketMessage(teamTicket);
+        return Msg.success();
+    }
+}

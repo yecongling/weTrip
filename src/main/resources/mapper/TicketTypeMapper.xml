@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.foo.wetrip.dao.TicketTypeMapper">
+  <resultMap id="BaseResultMap" type="com.foo.wetrip.bean.TicketType">
+    <id column="ticket_type_id" jdbcType="INTEGER" property="ticketTypeId" />
+    <result column="ticket_type_name" jdbcType="VARCHAR" property="ticketTypeName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ticket_type_id, ticket_type_name
+  </sql>
+  <select id="selectByExample" parameterType="com.foo.wetrip.bean.TicketTypeExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tickettype
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tickettype
+    where ticket_type_id = #{ticketTypeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tickettype
+    where ticket_type_id = #{ticketTypeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.foo.wetrip.bean.TicketTypeExample">
+    delete from tickettype
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.foo.wetrip.bean.TicketType">
+    insert into tickettype (ticket_type_id, ticket_type_name)
+    values (#{ticketTypeId,jdbcType=INTEGER}, #{ticketTypeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.foo.wetrip.bean.TicketType">
+    insert into tickettype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ticketTypeId != null">
+        ticket_type_id,
+      </if>
+      <if test="ticketTypeName != null">
+        ticket_type_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ticketTypeId != null">
+        #{ticketTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="ticketTypeName != null">
+        #{ticketTypeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.foo.wetrip.bean.TicketTypeExample" resultType="java.lang.Long">
+    select count(*) from tickettype
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tickettype
+    <set>
+      <if test="record.ticketTypeId != null">
+        ticket_type_id = #{record.ticketTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ticketTypeName != null">
+        ticket_type_name = #{record.ticketTypeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tickettype
+    set ticket_type_id = #{record.ticketTypeId,jdbcType=INTEGER},
+      ticket_type_name = #{record.ticketTypeName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.foo.wetrip.bean.TicketType">
+    update tickettype
+    <set>
+      <if test="ticketTypeName != null">
+        ticket_type_name = #{ticketTypeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ticket_type_id = #{ticketTypeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.foo.wetrip.bean.TicketType">
+    update tickettype
+    set ticket_type_name = #{ticketTypeName,jdbcType=VARCHAR}
+    where ticket_type_id = #{ticketTypeId,jdbcType=INTEGER}
+  </update>
+</mapper>

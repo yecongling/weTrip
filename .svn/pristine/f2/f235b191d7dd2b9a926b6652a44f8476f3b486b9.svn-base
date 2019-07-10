@@ -1,0 +1,18 @@
+package com.foo.wetrip.service.impl;
+
+import com.foo.wetrip.bean.TeamTicket;
+import com.foo.wetrip.dao.TeamTicketMapper;
+import com.foo.wetrip.service.TeamTicketService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class TeamTicketServiceImpl implements TeamTicketService {
+    @Autowired
+    TeamTicketMapper teamTicketMapper;
+    @Override
+    public void saveTeamTicketMessage(TeamTicket teamTicket) {
+        teamTicket.setStates((byte)0);
+        teamTicketMapper.insertSelective(teamTicket);
+    }
+}

@@ -1,0 +1,45 @@
+package com.foo.wetrip.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.foo.wetrip.bean.Answer;
+import com.foo.wetrip.service.AnswerService;
+import com.foo.wetrip.util.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+
+@Controller
+public class AnswerController {
+    @Autowired
+    private AnswerService answerService;
+
+    /**
+     * 回复客户反馈
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping("/insertAnswer")
+    public void insertAnswer(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //依次得到反馈编号,回复内容,回复时间,并插入数据库
+        Integer feedbackId = Integer.valueOf(request.getParameter("feedbackId"));
+        //System.out.println(feedbackId+"+++++++++++++++++++++++++++++++");
+        String answer = request.getParameter("answer");
+        Date answerTime = new Date();
+        Answer answer1 = new Answer();
+        answer1.setAnswer(answer);
+        answer1.setFeedbackId(feedbackId);
+        answer1.setAnswerTime(answerTime);
+        answerService.insert(answer1);
+        JsonResult result = new JsonResult(JsonResult.SUCCESS, "成功", true);
+        response.getWriter().println(JSON.toJSONString(result));
+
+    }
+
+}

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.foo.wetrip.dao.TrainTicketMapper">
+  <resultMap id="BaseResultMap" type="com.foo.wetrip.bean.TrainTicket">
+    <id column="ticket_id" jdbcType="INTEGER" property="ticketId" />
+    <result column="ticket_from" jdbcType="VARCHAR" property="ticketFrom" />
+    <result column="ticket_to" jdbcType="VARCHAR" property="ticketTo" />
+    <result column="train_id" jdbcType="INTEGER" property="trainId" />
+    <result column="ticket_typea" jdbcType="VARCHAR" property="ticketTypea" />
+    <result column="ticket_typeb" jdbcType="VARCHAR" property="ticketTypeb" />
+    <result column="ticket_typec" jdbcType="VARCHAR" property="ticketTypec" />
+    <result column="ticketa_number" jdbcType="INTEGER" property="ticketaNumber" />
+    <result column="ticketb_number" jdbcType="INTEGER" property="ticketbNumber" />
+    <result column="ticketc_number" jdbcType="INTEGER" property="ticketcNumber" />
+    <result column="ticketa_price" jdbcType="VARCHAR" property="ticketaPrice" />
+    <result column="ticketb_price" jdbcType="VARCHAR" property="ticketbPrice" />
+    <result column="ticketc_price" jdbcType="VARCHAR" property="ticketcPrice" />
+    <result column="from_time" jdbcType="TIME" property="fromTime" />
+    <result column="to_time" jdbcType="TIME" property="toTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ticket_id, ticket_from, ticket_to, train_id, ticket_typea, ticket_typeb, ticket_typec, 
+    ticketa_number, ticketb_number, ticketc_number, ticketa_price, ticketb_price, ticketc_price, 
+    from_time, to_time
+  </sql>
+  <select id="selectByExample" parameterType="com.foo.wetrip.bean.TrainTicketExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from trainticket
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trainticket
+    where ticket_id = #{ticketId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trainticket
+    where ticket_id = #{ticketId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.foo.wetrip.bean.TrainTicketExample">
+    delete from trainticket
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.foo.wetrip.bean.TrainTicket">
+    insert into trainticket (ticket_id, ticket_from, ticket_to, 
+      train_id, ticket_typea, ticket_typeb, 
+      ticket_typec, ticketa_number, ticketb_number, 
+      ticketc_number, ticketa_price, ticketb_price, 
+      ticketc_price, from_time, to_time
+      )
+    values (#{ticketId,jdbcType=INTEGER}, #{ticketFrom,jdbcType=VARCHAR}, #{ticketTo,jdbcType=VARCHAR}, 
+      #{trainId,jdbcType=INTEGER}, #{ticketTypea,jdbcType=VARCHAR}, #{ticketTypeb,jdbcType=VARCHAR}, 
+      #{ticketTypec,jdbcType=VARCHAR}, #{ticketaNumber,jdbcType=INTEGER}, #{ticketbNumber,jdbcType=INTEGER}, 
+      #{ticketcNumber,jdbcType=INTEGER}, #{ticketaPrice,jdbcType=VARCHAR}, #{ticketbPrice,jdbcType=VARCHAR}, 
+      #{ticketcPrice,jdbcType=VARCHAR}, #{fromTime,jdbcType=TIME}, #{toTime,jdbcType=TIME}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.foo.wetrip.bean.TrainTicket">
+    insert into trainticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ticketId != null">
+        ticket_id,
+      </if>
+      <if test="ticketFrom != null">
+        ticket_from,
+      </if>
+      <if test="ticketTo != null">
+        ticket_to,
+      </if>
+      <if test="trainId != null">
+        train_id,
+      </if>
+      <if test="ticketTypea != null">
+        ticket_typea,
+      </if>
+      <if test="ticketTypeb != null">
+        ticket_typeb,
+      </if>
+      <if test="ticketTypec != null">
+        ticket_typec,
+      </if>
+      <if test="ticketaNumber != null">
+        ticketa_number,
+      </if>
+      <if test="ticketbNumber != null">
+        ticketb_number,
+      </if>
+      <if test="ticketcNumber != null">
+        ticketc_number,
+      </if>
+      <if test="ticketaPrice != null">
+        ticketa_price,
+      </if>
+      <if test="ticketbPrice != null">
+        ticketb_price,
+      </if>
+      <if test="ticketcPrice != null">
+        ticketc_price,
+      </if>
+      <if test="fromTime != null">
+        from_time,
+      </if>
+      <if test="toTime != null">
+        to_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ticketId != null">
+        #{ticketId,jdbcType=INTEGER},
+      </if>
+      <if test="ticketFrom != null">
+        #{ticketFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketTo != null">
+        #{ticketTo,jdbcType=VARCHAR},
+      </if>
+      <if test="trainId != null">
+        #{trainId,jdbcType=INTEGER},
+      </if>
+      <if test="ticketTypea != null">
+        #{ticketTypea,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketTypeb != null">
+        #{ticketTypeb,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketTypec != null">
+        #{ticketTypec,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketaNumber != null">
+        #{ticketaNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ticketbNumber != null">
+        #{ticketbNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ticketcNumber != null">
+        #{ticketcNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ticketaPrice != null">
+        #{ticketaPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketbPrice != null">
+        #{ticketbPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketcPrice != null">
+        #{ticketcPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="fromTime != null">
+        #{fromTime,jdbcType=TIME},
+      </if>
+      <if test="toTime != null">
+        #{toTime,jdbcType=TIME},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.foo.wetrip.bean.TrainTicketExample" resultType="java.lang.Long">
+    select count(*) from trainticket
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update trainticket
+    <set>
+      <if test="record.ticketId != null">
+        ticket_id = #{record.ticketId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ticketFrom != null">
+        ticket_from = #{record.ticketFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketTo != null">
+        ticket_to = #{record.ticketTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trainId != null">
+        train_id = #{record.trainId,jdbcType=INTEGER},
+      </if>
+      <if test="record.ticketTypea != null">
+        ticket_typea = #{record.ticketTypea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketTypeb != null">
+        ticket_typeb = #{record.ticketTypeb,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketTypec != null">
+        ticket_typec = #{record.ticketTypec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketaNumber != null">
+        ticketa_number = #{record.ticketaNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.ticketbNumber != null">
+        ticketb_number = #{record.ticketbNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.ticketcNumber != null">
+        ticketc_number = #{record.ticketcNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.ticketaPrice != null">
+        ticketa_price = #{record.ticketaPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketbPrice != null">
+        ticketb_price = #{record.ticketbPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketcPrice != null">
+        ticketc_price = #{record.ticketcPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromTime != null">
+        from_time = #{record.fromTime,jdbcType=TIME},
+      </if>
+      <if test="record.toTime != null">
+        to_time = #{record.toTime,jdbcType=TIME},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update trainticket
+    set ticket_id = #{record.ticketId,jdbcType=INTEGER},
+      ticket_from = #{record.ticketFrom,jdbcType=VARCHAR},
+      ticket_to = #{record.ticketTo,jdbcType=VARCHAR},
+      train_id = #{record.trainId,jdbcType=INTEGER},
+      ticket_typea = #{record.ticketTypea,jdbcType=VARCHAR},
+      ticket_typeb = #{record.ticketTypeb,jdbcType=VARCHAR},
+      ticket_typec = #{record.ticketTypec,jdbcType=VARCHAR},
+      ticketa_number = #{record.ticketaNumber,jdbcType=INTEGER},
+      ticketb_number = #{record.ticketbNumber,jdbcType=INTEGER},
+      ticketc_number = #{record.ticketcNumber,jdbcType=INTEGER},
+      ticketa_price = #{record.ticketaPrice,jdbcType=VARCHAR},
+      ticketb_price = #{record.ticketbPrice,jdbcType=VARCHAR},
+      ticketc_price = #{record.ticketcPrice,jdbcType=VARCHAR},
+      from_time = #{record.fromTime,jdbcType=TIME},
+      to_time = #{record.toTime,jdbcType=TIME}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.foo.wetrip.bean.TrainTicket">
+    update trainticket
+    <set>
+      <if test="ticketFrom != null">
+        ticket_from = #{ticketFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketTo != null">
+        ticket_to = #{ticketTo,jdbcType=VARCHAR},
+      </if>
+      <if test="trainId != null">
+        train_id = #{trainId,jdbcType=INTEGER},
+      </if>
+      <if test="ticketTypea != null">
+        ticket_typea = #{ticketTypea,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketTypeb != null">
+        ticket_typeb = #{ticketTypeb,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketTypec != null">
+        ticket_typec = #{ticketTypec,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketaNumber != null">
+        ticketa_number = #{ticketaNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ticketbNumber != null">
+        ticketb_number = #{ticketbNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ticketcNumber != null">
+        ticketc_number = #{ticketcNumber,jdbcType=INTEGER},
+      </if>
+      <if test="ticketaPrice != null">
+        ticketa_price = #{ticketaPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketbPrice != null">
+        ticketb_price = #{ticketbPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketcPrice != null">
+        ticketc_price = #{ticketcPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="fromTime != null">
+        from_time = #{fromTime,jdbcType=TIME},
+      </if>
+      <if test="toTime != null">
+        to_time = #{toTime,jdbcType=TIME},
+      </if>
+    </set>
+    where ticket_id = #{ticketId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.foo.wetrip.bean.TrainTicket">
+    update trainticket
+    set ticket_from = #{ticketFrom,jdbcType=VARCHAR},
+      ticket_to = #{ticketTo,jdbcType=VARCHAR},
+      train_id = #{trainId,jdbcType=INTEGER},
+      ticket_typea = #{ticketTypea,jdbcType=VARCHAR},
+      ticket_typeb = #{ticketTypeb,jdbcType=VARCHAR},
+      ticket_typec = #{ticketTypec,jdbcType=VARCHAR},
+      ticketa_number = #{ticketaNumber,jdbcType=INTEGER},
+      ticketb_number = #{ticketbNumber,jdbcType=INTEGER},
+      ticketc_number = #{ticketcNumber,jdbcType=INTEGER},
+      ticketa_price = #{ticketaPrice,jdbcType=VARCHAR},
+      ticketb_price = #{ticketbPrice,jdbcType=VARCHAR},
+      ticketc_price = #{ticketcPrice,jdbcType=VARCHAR},
+      from_time = #{fromTime,jdbcType=TIME},
+      to_time = #{toTime,jdbcType=TIME}
+    where ticket_id = #{ticketId,jdbcType=INTEGER}
+  </update>
+</mapper>

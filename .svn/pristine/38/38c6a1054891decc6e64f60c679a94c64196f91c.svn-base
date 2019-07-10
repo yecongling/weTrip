@@ -1,0 +1,7 @@
+package com.foo.wetrip.service;
+
+import com.foo.wetrip.bean.TeamTicket;
+
+public interface TeamTicketService {
+   void saveTeamTicketMessage(TeamTicket teamTicket);
+}

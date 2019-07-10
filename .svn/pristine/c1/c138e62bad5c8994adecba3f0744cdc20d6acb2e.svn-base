@@ -1,0 +1,9 @@
+com\foo\wetrip\dao\ScenicTypeMapperTest.class
+MdPassword.class
+UserTest.class
+com\foo\wetrip\dao\AdminMapperTest.class
+MBGTest.class
+com\foo\wetrip\service\impl\IndexServiceImplTest.class
+com\foo\wetrip\service\impl\AdminServiceImplTest.class
+com\foo\wetrip\dao\ScenicMapperTest.class
+com\foo\wetrip\service\impl\ScenicServiceImplTest.class

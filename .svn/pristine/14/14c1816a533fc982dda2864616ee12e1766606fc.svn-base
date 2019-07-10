@@ -1,0 +1,102 @@
+package com.foo.wetrip.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.foo.wetrip.bean.Picture;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.service.CommentsService;
+import com.foo.wetrip.service.ScenicService;
+import com.foo.wetrip.util.CalculateResult;
+import com.foo.wetrip.util.CommentsAndUserUtil;
+import com.foo.wetrip.util.ScenicUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/2/26 11:43
+ * @Description: com.foo.wetrip.controller
+ * weTrip
+ */
+
+@Controller
+public class ScenicController {
+
+    @Autowired
+    private ScenicService scenicService;
+    @Autowired
+    private CommentsService commentsService;
+
+    @RequestMapping("/scenic-list")
+    public ModelAndView allPicture() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<ScenicUtil> scenicUtilList = scenicService.selectAllScenic();
+        modelAndView.addObject("scenicUtilList",scenicUtilList);
+        modelAndView.setViewName("/back/picture-list");
+        return modelAndView;
+    }
+    // 测试用的controller
+    @RequestMapping("/test")
+    public String test(){
+        return "scenic/scenic";
+    }
+
+    @RequestMapping(value = "/scenic")
+    public String getScenic(HttpServletRequest request, Model model){
+        //Integer scenicId = Integer.valueOf(request.getParameter("scenicId"));
+        Scenic scenic = scenicService.getScenicById(3);
+        Integer pictureId = scenic.getPictureId();
+        Picture picture = scenicService.getPicture(pictureId);
+        List<CommentsAndUserUtil> cauList = commentsService.getcommentsListWtihUserList(3);
+        CalculateResult result = commentsService.calculateResult(cauList);
+        model.addAttribute("scenic",scenic);
+        model.addAttribute("result",result);
+        model.addAttribute("picture",picture);
+        return "scenic/scenic";
+    }
+
+    @RequestMapping("/updateScenic")
+    public ModelAndView updateScenic(@RequestParam(value = "scenicId") Integer scenicId){
+        ModelAndView modelAndView = new ModelAndView();
+        scenicService.updateScenicStatus(scenicId);
+        modelAndView.setViewName("redirect:/scenic-list");
+        modelAndView.addObject("data",true);
+        return modelAndView;
+    }
+
+
+
+    @RequestMapping("/scenic-edit")
+    public void editScenic(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer scenicId = Integer.valueOf(request.getParameter("scenicId"));
+        ScenicUtil scenicUtil = scenicService.selectByScenicId(scenicId);
+        // 把java对象序列化为json
+        String json = JSON.toJSONString(scenicUtil,true);
+        // 设置响应头
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        // 输出json字符串
+        response.getWriter().print(json);
+    }
+
+
+    @RequestMapping("/scenic-update")
+    public void updateScenic(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        Integer scenicId = Integer.valueOf(request.getParameter("scenicId"));
+        String scenicName = request.getParameter("scenicName");
+        String address = request.getParameter("address");
+        String price = request.getParameter("price");
+        String description = request.getParameter("description");
+        // 修改景点的状态
+        scenicService.updateScenic(scenicId,scenicName,address,price,description);
+        response.getWriter().print("1");
+    }
+}

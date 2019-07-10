@@ -1,0 +1,229 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: 时雨i
+  Date: 2019/3/5
+  Time: 8:57
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>weTrip</title>
+    <!--引入bootstrap的css文件-->
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <!--引入自定义的样式文件-->
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/reset.css"/>
+    <link rel="stylesheet" href="./../css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/style.css"/>
+    <link rel="icon" href="<%=request.getContextPath()%>/static/img/index/logo.png">
+    <style>
+        body {
+            background-color: white;
+        }
+
+        .titleAddress {
+            float: left;
+            margin-top: 20px;
+        }
+
+        .titleAddress h2 strong {
+            font-size: 22px;
+            color: #2577E3;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <img class="img-responsive" src="<%=request.getContextPath()%>/static/img/index/index001.jpg">
+</div>
+<div class="container">
+    <nav class="navbar navbar-default"
+         style="background-color: rgba(215,238,250,0.91);font-size: 16px;font-weight: bold">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">首页</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">公告</a></li>
+                    <%--<li><a href="#">酒店</a></li>--%>
+                    <li class="dropdown" id="dropdown01">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true"
+                           aria-expanded="false">旅游 <span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="dropdown-menu01"
+                            style="display: none;background-color: rgb(213, 255, 239)">
+                            <li><a href="#body1">国内游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#body2">国外游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#body3">省内游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#body4">港澳台游</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#body5">周边</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="<%=request.getContextPath()%>/ticketSearch">车票</a></li>
+                    <%--<li><a href="#">公告</a></li>--%>
+                    <%--<li><a href="#">公告</a></li>--%>
+                    <%--<li><a href="#">公告</a></li>--%>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <c:choose>
+                        <c:when test="${sessionScope.user != null}">
+                            <li class="dropdown" id="dropdown02">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true"
+                                   aria-expanded="false">欢迎您,${sessionScope.user.userName} <span class="caret"></span></a>
+                                <ul class="dropdown-menu" id="dropdown-menu02"
+                                    style="display: none;background-color: rgb(213, 255, 239)">
+                                    <li><a href="#">我的信息</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="<%=request.getContextPath()%>/myOrder">我的订单</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="<%=request.getContextPath()%>/favorite">我的收藏</a></li>
+                                    <li><a href="<%=request.getContextPath()%>/exit">退出登录</a></li>
+                                </ul>
+                            </li>
+
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="<%=request.getContextPath()%>/preLogin">登录</a></li>
+                            <li><a href="<%=request.getContextPath()%>/preRegister">注册</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <%--正文--%>
+    <div class="titleAddress">
+        <h2>
+            <strong>${ticketFrom}</strong>
+            <i>----------></i>
+            <strong>${ticketTo}</strong>
+            <span style="font-size: 12px;color: #2577E3;padding-left: 20px;">单程</span>
+            <span style="font-size: 12px;color: black;padding-left: 20px;">共<span
+                    style="color: red;font-size: 20px;">${count}</span>个车次</span>
+        </h2>
+    </div>
+    <div class="search-checi" style="clear:both;height:76px; float: left;margin-top: 30px;font-size: 16px">
+        <dl class="search_cate_list">
+            <dt>车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型:<span style="color: blue">不限</span>
+                <input type="checkbox" style="margin-left: 20px;" value="高铁">
+                <span style="font-weight: lighter">G/C高铁</span>
+                <input type="checkbox" style="margin-left: 20px;" value="普通">
+                <span style="font-weight: lighter">普通</span>
+            </dt>
+        </dl>
+        <dl class="search_cate_list" style="margin-top: 10px;">
+            <dt>坐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;席:<span style="color: blue">不限</span>
+                <input type="checkbox" style="margin-left: 20px;" value="商务座">
+                <span style="font-weight: lighter">商务座</span>
+                <input type="checkbox" style="margin-left: 20px;" value="一等座">
+                <span style="font-weight: lighter">一等座</span>
+                <input type="checkbox" style="margin-left: 20px;" value="二等座">
+                <span style="font-weight: lighter">二等座</span>
+                <input type="checkbox" style="margin-left: 20px;" value="软卧">
+                <span style="font-weight: lighter">软卧</span>
+                <input type="checkbox" style="margin-left: 20px;" value="硬卧">
+                <span style="font-weight: lighter">硬卧</span>
+                <input type="checkbox" style="margin-left: 20px;" value="硬座">
+                <span style="font-weight: lighter">硬座</span>
+            </dt>
+        </dl>
+    </div>
+    <div style="clear:both;display: block;float: left;height: 30px;background-color: silver;border-bottom: 1px solid">
+        <span style="line-height: 30px;font-size: 16px;">车次信息</span>
+        <span style="margin-left: 120px;line-height: 30px;font-size: 16px; color: blue;">出发站/时间</span>
+        <span style="margin-left: 80px;line-height: 30px;font-size: 16px;">运行时长</span>
+        <span style="margin-left: 120px;line-height: 30px;font-size: 16px; color: blue;">到达站/时间</span>
+        <span style="margin-left: 80px;line-height: 30px;font-size: 16px;">坐席</span>
+        <span style="margin-left: 30px;line-height: 30px;font-size: 16px;">参考价</span>
+        <span style="margin-left: 150px;line-height: 30px;font-size: 16px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欢迎查看</span>
+    </div>
+    <div style="clear: both;height: 128px; border-bottom: 1px solid grey;margin-top: 10px">
+        <div style="float:left;width:50px;height:50px;border-radius:25px;border:solid rgb(100,100,100) 1px;background-color:skyblue;margin-top: 40px;margin-left: 20px">
+            <div style="width: 25px;height: 25px; line-height: 25px;margin:0 auto;color: white;"><strong>中转方案</strong>
+            </div>
+        </div>
+        <div style="float:left;height: 20px;line-height: 128px; margin-left: 100px;font-size: 16px;">
+            <span><strong>${ticketFrom}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></span>
+            <span style="color: skyblue;border: 1px solid grey;border-radius:25px;">&nbsp;-转-&nbsp;</span>
+            <span><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${ticketTo}</strong></span>
+        </div>
+        <div style="float:left;height: 20px;line-height: 128px; margin-left: 150px;font-size: 16px;">
+            <span style="color: red;">暂无可用中转方案</span>
+        </div>
+    </div>
+    <%--车次信息--%>
+    <c:forEach items="${trainInfoList}" var="trainInfo">
+        <div style="clear:both;display: block;height: 160px;border-bottom: 1px solid grey;">
+            <div class="col-lg-7" style="float: left;">
+                <div class="col-lg-3"><span
+                        style="line-height: 160px;font-size: 14px;"><strong>${trainInfo.trainName}</strong></span></div>
+                <div class="col-lg-9"><span
+                        style="line-height: 160px;font-size: 20px;"><strong>${trainInfo.fromTime}</strong></span>
+                    <span style="line-height: 160px; ">(始:${ticketFrom})</span>
+                    <span style="font-size: 14px;margin-left: 60px;">7小时45分</span>
+                    <span style="line-height: 160px;font-size: 20px;margin-left: 60px;"><strong>${trainInfo.toTime}</strong></span>
+                    <span style="line-height: 160px; ">(终:${ticketTo})</span>
+                </div>
+            </div>
+            <div class="col-lg-5" style="float: left;">
+                <div style="margin-top: 30px; margin-left: 20px;">
+                    <table class="table  table-hover table-bg">
+                        <tbody>
+                        <tr class="text-c" style="border:hidden;">
+                            <td style="font-size: 16px;">${trainInfo.ticketTypea}<span
+                                    style="color: red;font-size: 16px;">&nbsp;&nbsp;&nbsp;¥${trainInfo.ticketaPrice}</span>
+                            </td>
+                            <td>余${trainInfo.ticketaNumber}张</td>
+                            <td style="font-size: 16px;"><a href="<%=request.getContextPath()%>/alipay/goAlipay/?orderNum=20192019"
+                                    style=" display: block;height: 24px;width: 60px;background: #ff9933;color:#fff;font-weight: bold;text-decoration: none;border-radius:5px;line-height: 24px;"><span style="margin-left: 15px;">预定</span></a>
+                            </td>
+                        </tr>
+                        <tr class="text-c" style="border:hidden;">
+                            <td style="font-size: 16px;">${trainInfo.ticketTypeb}<span
+                                    style="color: red;font-size: 16px;">&nbsp;&nbsp;&nbsp;¥${trainInfo.ticketbPrice}</span>
+                            </td>
+                            <td>余${trainInfo.ticketbNumber}张</td>
+                            <td style="font-size: 16px;"><a href="<%=request.getContextPath()%>/alipay/goAlipay/?orderNum=20181122"
+                                    style=" display: block;height: 24px;width: 60px;background: #ff9933;color:#fff;font-weight: bold;text-decoration: none;border-radius:5px;line-height: 24px;"><span style="margin-left: 15px;">预定</span></a></td>
+                        </tr>
+                        <tr class="text-c" style="border:hidden;">
+                            <td style="font-size: 16px;">${trainInfo.ticketTypec}<span
+                                    style="font-size: 16px;color: red;">&nbsp;&nbsp;&nbsp;¥${trainInfo.ticketcPrice}</span>
+                            </td>
+                            <td>余${trainInfo.ticketcNumber}张</td>
+                            <td style="font-size: 16px;"><a href=""
+                                    style=" display: block;height: 24px;width: 60px;background: #ff9933;color:#fff;font-weight: bold;text-decoration: none;border-radius:5px;line-height: 24px;"><span style="margin-left: 15px;">预定</span></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </c:forEach>
+</div>
+
+
+<script src="<%=request.getContextPath()%>/static/js/jquery-3.3.1.js"></script>
+<!--引入bootstrap的js文件-->
+<script src="<%=request.getContextPath()%>/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+<!--引入自定义的js文件-->
+<script src="<%=request.getContextPath()%>/static/js/main.js"></script>
+<script src="<%=request.getContextPath()%>/static/js/rollOfIndex.js"></script>
+</body>
+</html>

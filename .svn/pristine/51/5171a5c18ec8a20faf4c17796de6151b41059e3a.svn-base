@@ -1,0 +1,40 @@
+package com.foo.wetrip.service;
+
+import com.foo.wetrip.bean.Oders;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.dao.CommentsMapper;
+import com.foo.wetrip.util.CalculateResult;
+import com.foo.wetrip.util.CommentsAndUserUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.security.PrivateKey;
+import java.util.List;
+
+
+public interface CommentsService {
+
+
+    /**
+     * 根据订单号,查询查询景点Id;
+     */
+     Oders getOrderByOrderNum(String orderNum);
+
+    /**
+     * 存储评论信息
+     * @param scenicId
+     * @param score
+     * @param content
+     * @param userId
+     */
+    void saveComments(Integer scenicId, Integer score, String content, Integer userId);
+
+
+    List<CommentsAndUserUtil> getcommentsListWtihUserList(Integer scenicId);
+
+    CalculateResult calculateResult(List<CommentsAndUserUtil> cauList);
+
+    List<CommentsAndUserUtil> getComentsByScenicIdWithScore(Integer scenicId, Integer score);
+
+
+}

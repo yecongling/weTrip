@@ -1,0 +1,27 @@
+package com.foo.wetrip.util;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/6/1 16:17
+ * @Description: 自定义异常类
+ * weTrip
+ *
+ */
+public class CustomException extends Exception {
+    // 异常信息
+    private String message;
+
+    public CustomException(String message) {
+        super(message);
+        this.message = message;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}

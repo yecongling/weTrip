@@ -1,0 +1,30 @@
+package com.foo.wetrip.dao;
+
+import com.foo.wetrip.bean.Oders;
+import com.foo.wetrip.bean.OdersExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface OdersMapper {
+    long countByExample(OdersExample example);
+
+    int deleteByExample(OdersExample example);
+
+    int deleteByPrimaryKey(Integer orderId);
+
+    int insert(Oders record);
+
+    int insertSelective(Oders record);
+
+    List<Oders> selectByExample(OdersExample example);
+
+    Oders selectByPrimaryKey(Integer orderId);
+
+    int updateByExampleSelective(@Param("record") Oders record, @Param("example") OdersExample example);
+
+    int updateByExample(@Param("record") Oders record, @Param("example") OdersExample example);
+
+    int updateByPrimaryKeySelective(Oders record);
+
+    int updateByPrimaryKey(Oders record);
+}

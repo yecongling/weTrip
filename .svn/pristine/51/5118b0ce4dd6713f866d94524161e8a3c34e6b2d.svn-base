@@ -1,0 +1,180 @@
+package com.foo.wetrip.service.impl;
+
+import com.foo.wetrip.bean.*;
+import com.foo.wetrip.dao.PictureMapper;
+import com.foo.wetrip.dao.ScenicMapper;
+import com.foo.wetrip.dao.ScenicTypeMapper;
+import com.foo.wetrip.dao.VideoMapper;
+import com.foo.wetrip.service.ScenicService;
+import com.foo.wetrip.util.ScenicUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class ScenicServiceImpl implements ScenicService {
+    @Autowired
+    private ScenicMapper scenicMapper;
+    @Autowired
+    private ScenicTypeMapper scenicTypeMapper;
+    @Autowired
+    private PictureMapper pictureMapper;
+    @Autowired
+    private VideoMapper videoMapper;
+
+    @Override
+    public Scenic getScenicById(Integer ScenicId) {
+        return scenicMapper.selectByPrimaryKey(ScenicId);
+    }
+
+    @Override
+    public List<ScenicUtil> selectAllScenic() {
+        List<ScenicUtil> scenicUtilList = new ArrayList<>();
+        ScenicExample scenicExample = new ScenicExample();
+        scenicExample.createCriteria().andEnableEqualTo(true);
+        List<Scenic> scenicList = scenicMapper.selectByExample(scenicExample);
+        allScenic(scenicUtilList, scenicList);
+        return scenicUtilList;
+    }
+
+    // 相同部分代码的重构成一个方法
+    private void allScenic(List<ScenicUtil> scenicUtilList, List<Scenic> scenicList) {
+        for (Scenic scenic : scenicList) {
+            ScenicUtil scenicUtil = new ScenicUtil();
+            // 封装部分数据
+            scenicUtil.setScenicId(scenic.getScenicId());
+            scenicUtil.setScenicName(scenic.getScenicName());
+            scenicUtil.setAddress(scenic.getAddress());
+            scenicUtil.setDescription(scenic.getDescription());
+            scenicUtil.setEnable(scenic.getEnable());
+            scenicUtil.setPrice(scenic.getPrice());
+            // 查询景点类型
+            ScenicType scenicType = scenicTypeMapper.selectByPrimaryKey(scenic.getScenicTypeId());
+            // 查询图片路径信息
+            Picture picture = pictureMapper.selectByPrimaryKey(scenic.getPictureId());
+            // 查询视频路径信息
+            Video video = videoMapper.selectByPrimaryKey(scenic.getVideoId());
+            // 数据封装
+            scenicUtil.setPicturePath(picture.getPicturePath());
+            scenicUtil.setVideoPath(video.getVideoPath());
+            scenicUtil.setScenicTypeName(scenicType.getScenicTypeName());
+            // 把这个实体封装到集合中
+            scenicUtilList.add(scenicUtil);
+        }
+    }
+
+    @Override
+    public List<ScenicUtil> selectScenic() {
+        List<ScenicUtil> scenicUtilList = new ArrayList<>();
+        List<Scenic> scenicList = scenicMapper.selectByExample(null);
+        allScenic(scenicUtilList, scenicList);
+        return scenicUtilList;
+    }
+
+
+    @Override
+    public void updateScenicStatus(Integer scenicId) {
+        // 根据主键查询景点是否可以是可使用的
+        Scenic scenic = scenicMapper.selectByPrimaryKey(scenicId);
+        ScenicExample scenicExample = new ScenicExample();
+        // 创造查询条件和更改的条件
+        scenicExample.createCriteria().andScenicIdEqualTo(scenicId);
+        if (scenic.getEnable()) {
+            // 更改景点的使用状态
+            scenic.setEnable(false);
+            scenicMapper.updateByExampleSelective(scenic, scenicExample);
+        } else {
+            scenic.setEnable(true);
+            scenicMapper.updateByExampleSelective(scenic, scenicExample);
+        }
+    }
+
+    @Override
+    public ScenicUtil selectByScenicId(Integer scenicId) {
+        // 根据主键查询景点的信息
+        Scenic scenic = scenicMapper.selectByPrimaryKey(scenicId);
+        ScenicType scenicType = scenicTypeMapper.selectByPrimaryKey(scenic.getScenicTypeId());
+        Picture picture = pictureMapper.selectByPrimaryKey(scenicId);
+        Video video = videoMapper.selectByPrimaryKey(scenic.getVideoId());
+        ScenicUtil scenicUtil = new ScenicUtil();
+        scenicUtil.setScenicId(scenic.getScenicId());
+        scenicUtil.setEnable(scenic.getEnable());
+        scenicUtil.setScenicName(scenic.getScenicName());
+        scenicUtil.setAddress(scenic.getAddress());
+        scenicUtil.setPrice(scenic.getPrice());
+        scenicUtil.setPicturePath(picture.getPicturePath());
+        scenicUtil.setScenicTypeName(scenicType.getScenicTypeName());
+        scenicUtil.setVideoPath(video.getVideoPath());
+        scenicUtil.setDescription(scenic.getDescription());
+        return scenicUtil;
+    }
+
+    @Override
+    public void updateScenic(Integer scenicId, String scenicName, String address, String price, String description) {
+
+        Scenic scenic = new Scenic();
+
+        ScenicExample scenicExample = new ScenicExample();
+
+        scenicExample.createCriteria().andScenicIdEqualTo(scenicId);
+        scenic.setScenicName(scenicName);
+        scenic.setAddress(address);
+        scenic.setPrice(price);
+        scenic.setDescription(description);
+        scenicMapper.updateByExampleSelective(scenic, scenicExample);
+    }
+
+
+    @Override
+    public Picture getPicture(Integer pictureId) {
+        Picture picture = pictureMapper.selectByPrimaryKey(pictureId);
+        return picture;
+    }
+
+    @Override
+    public List<ScenicType> selectAllScenicType() {
+        List<ScenicType> scenicTypes = scenicTypeMapper.selectByExample(null);
+        return scenicTypes;
+    }
+
+    @Override
+    public void insertScenic(String scenicName, String address, Integer scenicTypeId, String price, String description, String img) {
+        // 先插入图片到表中
+        Picture picture = new Picture();
+        picture.setPicturePath(img);
+        pictureMapper.insert(picture);
+        // 得到图片的编号
+        PictureExample pictureExample = new PictureExample();
+        pictureExample.createCriteria().andPicturePathEqualTo(img);
+        List<Picture> pictures = pictureMapper.selectByExample(pictureExample);
+        Integer pictureId = pictures.get(0).getPictureId();
+        // 插入信息到景点表
+        Scenic scenic = new Scenic();
+        scenic.setDescription(description);
+        scenic.setPrice(price);
+        scenic.setAddress(address);
+        scenic.setScenicName(scenicName);
+        scenic.setEnable(true);
+        scenic.setVideoId(1);
+        scenic.setPictureId(pictureId);
+        scenic.setScenicTypeId(scenicTypeId);
+        scenicMapper.insert(scenic);
+    }
+
+    @Override
+    public ScenicUtil selectScenic(Integer scenicId) {
+        Scenic scenic = scenicMapper.selectByPrimaryKey(scenicId);
+        ScenicType scenicType = scenicTypeMapper.selectByPrimaryKey(scenic.getScenicTypeId());
+        // 查询图片路径信息
+        Picture picture = pictureMapper.selectByPrimaryKey(scenic.getPictureId());
+        // 查询视频路径信息
+        Video video = videoMapper.selectByPrimaryKey(scenic.getVideoId());
+        // 数据封装
+        ScenicUtil scenicUtil = new ScenicUtil(scenic.getScenicId(),scenic.getScenicName(),scenic.getAddress(),scenic.getPrice(),scenic.getDescription(),scenic.getEnable(),scenicType.getScenicTypeName(),picture.getPicturePath(),video.getVideoPath());
+
+        return scenicUtil;
+    }
+
+}

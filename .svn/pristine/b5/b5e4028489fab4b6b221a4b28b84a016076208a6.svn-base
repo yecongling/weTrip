@@ -1,0 +1,21 @@
+package com.foo.wetrip.service;
+
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.util.ScenicUtil;
+
+import java.util.List;
+
+public interface ScenicService {
+    /**
+     * 根据产品ID查询产品详情
+     * @param ScenicId
+     * @return
+     */
+    public Scenic getScenicById(Integer ScenicId);
+
+    /**
+     * 所有的景点信息,这里需要通过数据的封装来保证数据的完整性
+     * @return
+     */
+    List<ScenicUtil> selectAllScenic();
+}

@@ -1,0 +1,90 @@
+package com.foo.wetrip.controller;
+
+
+import com.foo.wetrip.bean.MyOrder;
+import com.foo.wetrip.bean.Users;
+import com.foo.wetrip.dao.UsersMapper;
+import com.foo.wetrip.service.MyOrderService;
+import com.foo.wetrip.service.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+
+@Controller
+public class UsersController {
+
+    @Autowired
+    UsersMapper usersMapper;
+
+    @Autowired
+    UsersService usersService;
+
+    @Autowired
+    MyOrderService myOrderService;
+
+    @RequestMapping("preLogin")
+    public String preLogin() {
+        return "users/login";
+    }
+
+
+    @RequestMapping("preRegister")
+    public String preRegister() {
+        return "users/register";
+    }
+
+    @RequestMapping("/login")
+    public ModelAndView login(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        String phoneNum = request.getParameter("phoneNum");
+        System.out.println(phoneNum + "账号===============");
+        String password = request.getParameter("password");
+        boolean b = usersService.userLogin(phoneNum, password);
+        if (b == true) {
+            //跳转的页面
+            modelAndView.setViewName("redirect:/index");
+        } else {
+            //返回信息
+            modelAndView.addObject("msg", "用户名或者密码错误");
+            modelAndView.setViewName("/users/login");
+        }
+        HttpSession session = request.getSession();
+        Users user = usersMapper.selectByPhoneNum(phoneNum);
+        session.setAttribute("user", user);
+        return modelAndView;
+    }
+
+    @RequestMapping("/myOrder")
+    public ModelAndView myOrder(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+        Users user = (Users) session.getAttribute("user");
+        Integer userId = user.getUserId();
+
+        // Integer userId = 1;
+        List<MyOrder> orderList = myOrderService.selectMyOrder(userId);
+
+        System.out.println(orderList.size() + "长度_____________");
+        for (MyOrder myOrder : orderList) {
+            System.out.println(myOrder.getOrderNum() + "==================");
+            System.out.println(myOrder.getScenicTypeName());
+            System.out.println(myOrder.getCreateTime());
+            System.out.println(myOrder.getBuyCounts());
+            System.out.println(myOrder.getPayPrice() + "==================");
+        }
+        modelAndView.addObject("orderList", orderList);
+        modelAndView.setViewName("/users/myOrder");
+        return modelAndView;
+    }
+
+
+    @RequestMapping("/exit")
+    public String exit(HttpServletRequest request) {
+        request.getSession().removeAttribute("user");
+        return "redirect:/index";
+    }
+}

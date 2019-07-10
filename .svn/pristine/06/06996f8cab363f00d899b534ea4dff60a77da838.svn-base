@@ -1,0 +1,193 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 我本机的服务器
+Source Server Version : 50536
+Source Host           : localhost:3306
+Source Database       : wetrip
+
+Target Server Type    : MYSQL
+Target Server Version : 50536
+File Encoding         : 65001
+
+Date: 2019-03-01 16:40:58
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for admin
+-- ----------------------------
+DROP TABLE IF EXISTS `admin`;
+CREATE TABLE `admin` (
+  `admin_id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `phone_num` varchar(255) NOT NULL,
+  PRIMARY KEY (`admin_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for comments
+-- ----------------------------
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(512) DEFAULT NULL,
+  `comment_time` datetime DEFAULT NULL,
+  `score` int(11) DEFAULT NULL,
+  `enable` tinyint(1) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `scenic_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for favorite
+-- ----------------------------
+DROP TABLE IF EXISTS `favorite`;
+CREATE TABLE `favorite` (
+  `collection_id` int(11) NOT NULL AUTO_INCREMENT,
+  `scenic_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `collection_time` date DEFAULT NULL,
+  PRIMARY KEY (`collection_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for flow
+-- ----------------------------
+DROP TABLE IF EXISTS `flow`;
+CREATE TABLE `flow` (
+  `flow_id` int(11) NOT NULL AUTO_INCREMENT,
+  `flow_num` varchar(255) DEFAULT NULL,
+  `trade_price` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `order_num` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`flow_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for hotel
+-- ----------------------------
+DROP TABLE IF EXISTS `hotel`;
+CREATE TABLE `hotel` (
+  `hotel_id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `price` varchar(255) DEFAULT NULL,
+  `enable` tinyint(1) DEFAULT NULL,
+  `picture_id` int(11) DEFAULT NULL,
+  `video_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`hotel_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for log
+-- ----------------------------
+DROP TABLE IF EXISTS `log`;
+CREATE TABLE `log` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `operator` varchar(255) DEFAULT NULL,
+  `ip` varchar(255) DEFAULT NULL,
+  `start_time` date DEFAULT NULL,
+  `end_time` date DEFAULT NULL,
+  `use_time` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for orders
+-- ----------------------------
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_num` varchar(255) DEFAULT NULL,
+  `order_status` varchar(255) DEFAULT NULL,
+  `pay_price` varchar(255) DEFAULT NULL,
+  `buy_counts` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `paid_time` datetime DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `scenic_id` int(11) DEFAULT NULL,
+  `hotel_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for passengers
+-- ----------------------------
+DROP TABLE IF EXISTS `passengers`;
+CREATE TABLE `passengers` (
+  `passenger_id` int(11) NOT NULL AUTO_INCREMENT,
+  `passenger_name` varchar(255) DEFAULT NULL,
+  `phone_num` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `id_card` varchar(255) DEFAULT NULL,
+  `gender` char(10) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `trip_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`passenger_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for picture
+-- ----------------------------
+DROP TABLE IF EXISTS `picture`;
+CREATE TABLE `picture` (
+  `picture_id` int(11) NOT NULL AUTO_INCREMENT,
+  `picture_path` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`picture_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for scenic
+-- ----------------------------
+DROP TABLE IF EXISTS `scenic`;
+CREATE TABLE `scenic` (
+  `scenic_id` int(11) NOT NULL AUTO_INCREMENT,
+  `scenic_name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `price` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `enable` tinyint(1) DEFAULT NULL,
+  `scenic_type_id` int(11) DEFAULT NULL,
+  `picture_id` int(11) DEFAULT NULL,
+  `video_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`scenic_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for scenictype
+-- ----------------------------
+DROP TABLE IF EXISTS `scenictype`;
+CREATE TABLE `scenictype` (
+  `scenic_type_id` int(11) NOT NULL AUTO_INCREMENT,
+  `scenic_type_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`scenic_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) DEFAULT NULL,
+  `phone_num` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `enable` tinyint(1) DEFAULT NULL,
+  `id_card` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for video
+-- ----------------------------
+DROP TABLE IF EXISTS `video`;
+CREATE TABLE `video` (
+  `video_id` int(11) NOT NULL AUTO_INCREMENT,
+  `video_path` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`video_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

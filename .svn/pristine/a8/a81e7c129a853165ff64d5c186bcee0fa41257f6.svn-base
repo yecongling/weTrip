@@ -1,0 +1,79 @@
+package com.foo.wetrip.service.impl;
+
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.bean.ScenicExample;
+import com.foo.wetrip.bean.ScenicType;
+import com.foo.wetrip.dao.PictureMapper;
+import com.foo.wetrip.dao.ScenicMapper;
+import com.foo.wetrip.dao.ScenicTypeMapper;
+import com.foo.wetrip.dao.VideoMapper;
+import com.foo.wetrip.service.IndexService;
+import com.foo.wetrip.util.ScenicUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/2/28 10:36
+ * @Description: com.foo.wetrip.service.impl
+ * weTrip
+ */
+
+@Service
+public class IndexServiceImpl implements IndexService {
+    @Autowired
+    private ScenicMapper scenicMapper;
+    @Autowired
+    private ScenicTypeMapper scenicTypeMapper;
+    @Autowired
+    private PictureMapper pictureMapper;
+    @Autowired
+    private VideoMapper videoMapper;
+
+    @Override
+    public Map<String, List<ScenicUtil>> selectAllScenicByScenicType() {
+        //申明map集合
+        HashMap<String, List<ScenicUtil>> map = new HashMap<>();
+        // 首先查询所有的景点的类别
+        List<ScenicType> scenicTypes = scenicTypeMapper.selectByExample(null);
+        // 遍历景点的类型
+        for (ScenicType scenicType : scenicTypes) {
+            // 然后根据景点的id来分组不同的景点类型
+            ScenicExample scenicExample = new ScenicExample();
+            ScenicExample.Criteria criteria = scenicExample.createCriteria();
+            // 添加查询的条件
+            criteria.andScenicTypeIdEqualTo(scenicType.getScenicTypeId());
+            HashSet<Integer> set = new HashSet<>();
+            List<Scenic> scenicList = scenicMapper.selectByExample(scenicExample);
+            ArrayList<ScenicUtil> scenicUtils = new ArrayList<>();
+            for (Scenic scenic : scenicList) {
+                ScenicUtil scenicUtil = new ScenicUtil();
+                scenicUtil.setScenicId(scenic.getScenicId());
+                scenicUtil.setPrice(scenic.getPrice());
+                scenicUtil.setAddress(scenic.getAddress());
+                scenicUtil.setDescription(scenic.getDescription());
+                scenicUtil.setScenicName(scenic.getScenicName());
+                scenicUtil.setEnable(scenic.getEnable());
+                scenicUtil.setScenicTypeName(scenicTypeMapper.selectByPrimaryKey(scenic.getScenicTypeId()).getScenicTypeName());
+                scenicUtil.setPicturePath(pictureMapper.selectByPrimaryKey(scenic.getPictureId()).getPicturePath());
+                scenicUtil.setVideoPath(videoMapper.selectByPrimaryKey(scenic.getVideoId()).getVideoPath());
+                scenicUtils.add(scenicUtil);
+            }
+            int id;
+            do {
+                id = (int) Math.floor(Math.random() * scenicUtils.size());
+                System.out.println(id);
+                set.add(id);
+            } while (set.size() < 1);
+            ArrayList<ScenicUtil> list = new ArrayList<>();
+            for (Integer j : set) {
+                list.add(scenicUtils.get(j));
+            }
+            // 把按照不同条件查询到的集合封装到map中
+            map.put(scenicType.getScenicTypeName(), list);
+        }
+        return map;
+    }
+}

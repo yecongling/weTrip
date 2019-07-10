@@ -1,0 +1,92 @@
+package com.foo.wetrip.controller;
+
+import com.foo.wetrip.bean.Oders;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.bean.Users;
+import com.foo.wetrip.service.OrderService;
+import com.foo.wetrip.service.ScenicService;
+import com.foo.wetrip.util.IDUtils;
+import com.foo.wetrip.util.OrderStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+
+@Controller
+public class OrdersController {
+    @Autowired
+    ScenicService scenicService;
+    @Autowired
+    OrderService orderService;
+
+    /**
+     * 进入确认页面
+     *
+     * @param scenicId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/goConfirm/{scenicId}")
+    public ModelAndView goConfirm(@PathVariable Integer scenicId, HttpSession session) {
+
+        Scenic scenic = scenicService.getScenicById(scenicId);
+        Integer buyCounts = (Integer) session.getAttribute("tripNum");
+
+        ModelAndView mv = new ModelAndView("goConfirm");
+        mv.addObject("buyCounts", buyCounts);
+        mv.addObject("scenic", scenic);
+
+        return mv;
+    }
+
+    /**
+     * 分段提交
+     * 第一段：保存订单
+     *
+     * @param
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/createOrder")
+    public String createOrder(Integer scenicId, Integer buyCounts, Model model, HttpSession session) {
+        Scenic scenic = scenicService.getScenicById(scenicId);
+        //生成订单
+        //强装类型
+        String orderNum = String.valueOf(IDUtils.genItemId());
+        String orderStatus = String.valueOf(OrderStatusEnum.WAIT_PAY.key);
+        Integer price = Integer.valueOf(scenic.getPrice());
+        String payPrice = String.valueOf(price * buyCounts);
+        //向订单封装数据
+        Oders orders = new Oders();
+        orders.setOrderNum(orderNum);
+        orders.setOrderStatus(orderStatus);
+        orders.setBuyCounts(buyCounts);
+        orders.setPayPrice(payPrice);
+        orders.setCreateTime(new Date());
+        orders.setPaidTime(null);
+        orders.setScenicId(scenicId);
+        Users user = (Users) session.getAttribute("user");
+        orders.setUserId(user.getUserId());
+        orders.setHotelId(null);
+        orderService.saveOrders(orders);
+        System.out.println("------------------------------------");
+        System.out.println(orders.getOrderNum());
+        //返回数据
+        model.addAttribute("orders", orders);
+        model.addAttribute("scenic", scenic);
+        return "goPay";
+    }
+
+
+    @RequestMapping("/or")
+    public String or() {
+        return "goConfirm";
+    }
+
+
+}

@@ -1,0 +1,127 @@
+package com.foo.wetrip.util;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/2/26 11:16
+ * @Description: com.foo.wetrip.util
+ * weTrip
+ */
+
+/**
+ * 封装的景点页面数据的实体
+ */
+public class ScenicUtil {
+    private Integer scenicId;
+    private String scenicName;
+    private String address;
+    private String price;
+    private String description;
+    private Boolean enable;
+    private String scenicTypeName;
+    private String picturePath;
+    private String videoPath;
+
+    public Integer getScenicId() {
+        return scenicId;
+    }
+
+    public void setScenicId(Integer scenicId) {
+        this.scenicId = scenicId;
+    }
+
+    public String getScenicName() {
+        return scenicName;
+    }
+
+    public void setScenicName(String scenicName) {
+        this.scenicName = scenicName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
+
+    public String getScenicTypeName() {
+        return scenicTypeName;
+    }
+
+    public void setScenicTypeName(String scenicTypeName) {
+        this.scenicTypeName = scenicTypeName;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
+    }
+
+    public String getVideoPath() {
+        return videoPath;
+    }
+
+    public void setVideoPath(String videoPath) {
+        this.videoPath = videoPath;
+    }
+
+    public ScenicUtil(){
+
+    }
+
+    public ScenicUtil(Integer scenicId, String scenicName, String address, String price, String description, Boolean enable, String scenicTypeName, String picturePath, String videoPath) {
+
+        this.scenicId = scenicId;
+        this.scenicName = scenicName;
+        this.address = address;
+        this.price = price;
+        this.description = description;
+        this.enable = enable;
+        this.scenicTypeName = scenicTypeName;
+        this.picturePath = picturePath;
+        this.videoPath = videoPath;
+    }
+
+    @Override
+    public String toString() {
+        return "ScenicUtil{" +
+                "scenicId=" + scenicId +
+                ", scenicName='" + scenicName + '\'' +
+                ", address='" + address + '\'' +
+                ", price='" + price + '\'' +
+                ", description='" + description + '\'' +
+                ", enable=" + enable +
+                ", scenicTypeName='" + scenicTypeName + '\'' +
+                ", picturePath='" + picturePath + '\'' +
+                ", videoPath='" + videoPath + '\'' +
+                '}';
+    }
+}

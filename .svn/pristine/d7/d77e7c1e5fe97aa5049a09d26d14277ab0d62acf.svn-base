@@ -1,0 +1,21 @@
+package com.foo.wetrip.service;
+
+import com.foo.wetrip.util.ScenicUtil;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/2/28 10:25
+ * @Description: com.foo.wetrip.service
+ * weTrip
+ */
+public interface IndexService {
+
+    /**
+     * 根据景点类型查询所有的景点,按照不同的类别来进行封装到map集合中
+     * @return
+     */
+    Map<String,List<ScenicUtil>> selectAllScenicByScenicType();
+}

@@ -1,0 +1,14 @@
+package com.foo.wetrip.service;
+
+import com.foo.wetrip.bean.Oders;
+
+import java.util.List;
+
+public interface OrderService {
+
+void saveOrders(Oders orders);
+
+List<Oders> getOrdersList(String orderNum);
+
+void updateOrderStatus(String orderNum, String flowNum, String tradePrice);
+}

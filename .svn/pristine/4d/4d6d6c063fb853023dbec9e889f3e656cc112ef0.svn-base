@@ -1,0 +1,63 @@
+package com.foo.wetrip.service.impl;
+
+import com.foo.wetrip.bean.Picture;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.bean.ScenicType;
+import com.foo.wetrip.bean.Video;
+import com.foo.wetrip.dao.PictureMapper;
+import com.foo.wetrip.dao.ScenicMapper;
+import com.foo.wetrip.dao.ScenicTypeMapper;
+import com.foo.wetrip.dao.VideoMapper;
+import com.foo.wetrip.service.ScenicService;
+import com.foo.wetrip.util.ScenicUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class ScenicServiceImpl implements ScenicService {
+    @Autowired
+    private ScenicMapper scenicMapper;
+    @Autowired
+    private ScenicTypeMapper scenicTypeMapper;
+    @Autowired
+    private PictureMapper pictureMapper;
+    @Autowired
+    private VideoMapper videoMapper;
+
+    @Override
+    public Scenic getScenicById(Integer ScenicId) {
+        return scenicMapper.selectByPrimaryKey(ScenicId);
+    }
+
+    @Override
+    public List<ScenicUtil> selectAllScenic() {
+        List<ScenicUtil> scenicUtilList = new ArrayList<>();
+        List<Scenic> scenicList = scenicMapper.selectByExample(null);
+        for (Scenic scenic : scenicList) {
+            ScenicUtil scenicUtil = new ScenicUtil();
+            // 封装部分数据
+            scenicUtil.setScenicId(scenic.getScenicId());
+            scenicUtil.setScenicName(scenic.getScenicName());
+            scenicUtil.setAddress(scenic.getAddress());
+            scenicUtil.setDescription(scenic.getDescription());
+            scenicUtil.setEnable(scenic.getEnable());
+            scenicUtil.setPrice(scenic.getPrice());
+            // 查询景点类型
+            ScenicType scenicType = scenicTypeMapper.selectByPrimaryKey(scenic.getScenicTypeId());
+            // 查询图片路径信息
+            Picture picture = pictureMapper.selectByPrimaryKey(scenic.getPictureId());
+            // 查询视频路径信息
+            Video video = videoMapper.selectByPrimaryKey(scenic.getVideoId());
+            // 数据封装
+            scenicUtil.setPicturePath(picture.getPicturePath());
+            scenicUtil.setVideoPath(video.getVideoPath());
+            scenicUtil.setScenicTypeName(scenicType.getScenicTypeName());
+            // 把这个实体封装到集合中
+            scenicUtilList.add(scenicUtil);
+        }
+        return scenicUtilList;
+    }
+}

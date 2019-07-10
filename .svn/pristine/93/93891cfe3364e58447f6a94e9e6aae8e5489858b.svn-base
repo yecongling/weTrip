@@ -1,0 +1,44 @@
+package com.foo.wetrip.util;
+
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/6/1 16:24
+ * @Description: 全局异常处理器
+ * weTrip
+ */
+public class CustomExceptionResolver implements HandlerExceptionResolver {
+
+    /**
+     * 系统抛出的异常
+     * @param request 请求
+     * @param response 响应
+     * @param handler 处理器
+     * @param ex 异常
+     * @return 出现异常时应该跳转的视图和要传递的数据
+     */
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        // 解析出异常类型
+        CustomException customException = null;
+        // 如果该异常是系统自定义的异常,则直接取出异常信息显示在错误页面即可,否则就是未知错误
+        if (ex instanceof CustomException){
+            customException = (CustomException) ex;
+        } else{
+            customException = new CustomException("出现了未知的错误啦!");
+        }
+        // 错误信息
+        String message = customException.getMessage();
+        ModelAndView modelAndView = new ModelAndView();
+        // 将错误信息指向页面
+        modelAndView.addObject("message",message);
+        // 跳转到错误页面
+        modelAndView.setViewName("error");
+        return modelAndView;
+    }
+}

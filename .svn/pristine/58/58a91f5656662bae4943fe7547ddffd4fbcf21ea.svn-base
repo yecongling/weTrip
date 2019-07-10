@@ -1,0 +1,12 @@
+package com.foo.wetrip.service;
+
+import com.foo.wetrip.bean.TicketUtil;
+
+import java.util.List;
+
+public interface TicketService {
+   long selectSumByCounts(Integer scenicId);
+
+
+   List<TicketUtil> selectTotalCounts();
+}

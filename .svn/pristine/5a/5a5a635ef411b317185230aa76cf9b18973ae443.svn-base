@@ -1,0 +1,76 @@
+package com.foo.wetrip.controller;
+
+import com.foo.wetrip.bean.Favorite;
+import com.foo.wetrip.bean.FavoriteExample;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.bean.Users;
+import com.foo.wetrip.dao.FavoriteMapper;
+import com.foo.wetrip.dao.ScenicMapper;
+import com.foo.wetrip.util.FavoriteListUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Controller
+public class FavoriteController {
+    @Autowired
+    private FavoriteMapper favoriteMapper;
+    @Autowired
+    private ScenicMapper scenicMapper;
+
+//    @RequestMapping(value = "/favorite")
+//    public String saveFavoriteAndGetList(HttpServletRequest request, Model model, HttpSession session) {
+//        Integer scenicId = Integer.valueOf(request.getParameter("scenicId"));
+//        //从session取出User
+//        Users user = (Users) session.getAttribute("user");
+//        if (user == null) {
+//            return "redirect:/preLogin";
+//        }
+//        Integer userId = user.getUserId();
+//
+//        return "";
+//    }
+
+    private void myFavorite(List<Favorite> favorites, List<FavoriteListUtil> favoriteListUtilList) {
+        for (Favorite favorite : favorites) {
+            //利用封装的实体类
+            FavoriteListUtil favoriteList = new FavoriteListUtil();
+            Integer collectionId = favorite.getCollectionId();
+            Integer scenicId1 = favorite.getScenicId();
+            Scenic scenic = scenicMapper.selectByPrimaryKey(scenicId1);
+            String scenicName = scenic.getScenicName();
+            String address = scenic.getAddress();
+            String price = scenic.getPrice();
+            String description = scenic.getDescription();
+            favoriteList.setCollectionId(collectionId);
+            favoriteList.setScenicName(scenicName);
+            favoriteList.setAddress(address);
+            favoriteList.setDescription(description);
+            favoriteList.setPrice(price);
+            favoriteListUtilList.add(favoriteList);
+        }
+    }
+
+    @RequestMapping(value = "/cancelFavorite")
+    @ResponseBody
+    public void cancelFavorite(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer id = Integer.valueOf(request.getParameter("scenicId"));
+        favoriteMapper.deleteByPrimaryKey(id);
+        response.getWriter().write(1);
+    }
+
+    @RequestMapping("/re")
+    public String review() {
+        return "comment/review";
+    }
+
+}

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.foo.wetrip.dao.OdersMapper">
+  <resultMap id="BaseResultMap" type="com.foo.wetrip.bean.Oders">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
+    <result column="pay_price" jdbcType="VARCHAR" property="payPrice" />
+    <result column="buy_counts" jdbcType="INTEGER" property="buyCounts" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="paid_time" jdbcType="TIMESTAMP" property="paidTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="scenic_id" jdbcType="INTEGER" property="scenicId" />
+    <result column="hotel_id" jdbcType="INTEGER" property="hotelId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    order_id, order_num, order_status, pay_price, buy_counts, create_time, paid_time, 
+    user_id, scenic_id, hotel_id
+  </sql>
+  <select id="selectByExample" parameterType="com.foo.wetrip.bean.OdersExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orders
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from orders
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.foo.wetrip.bean.OdersExample">
+    delete from orders
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.foo.wetrip.bean.Oders">
+    insert into orders (order_id, order_num, order_status, 
+      pay_price, buy_counts, create_time, 
+      paid_time, user_id, scenic_id, 
+      hotel_id)
+    values (#{orderId,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR}, #{orderStatus,jdbcType=VARCHAR}, 
+      #{payPrice,jdbcType=VARCHAR}, #{buyCounts,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{paidTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, #{scenicId,jdbcType=INTEGER}, 
+      #{hotelId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.foo.wetrip.bean.Oders">
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
+      <if test="payPrice != null">
+        pay_price,
+      </if>
+      <if test="buyCounts != null">
+        buy_counts,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="paidTime != null">
+        paid_time,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="scenicId != null">
+        scenic_id,
+      </if>
+      <if test="hotelId != null">
+        hotel_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="payPrice != null">
+        #{payPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="buyCounts != null">
+        #{buyCounts,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paidTime != null">
+        #{paidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="scenicId != null">
+        #{scenicId,jdbcType=INTEGER},
+      </if>
+      <if test="hotelId != null">
+        #{hotelId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.foo.wetrip.bean.OdersExample" resultType="java.lang.Long">
+    select count(*) from orders
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+    <!--查询门票总数-->
+    <select id="selectSumByCounts" parameterType="java.lang.Integer"  resultType="java.lang.Long">
+        select sum(buy_counts) from `orders` where
+            scenic_id = #{scenicId,jdbcType=INTEGER}
+    </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update orders
+    <set>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNum != null">
+        order_num = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderStatus != null">
+        order_status = #{record.orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payPrice != null">
+        pay_price = #{record.payPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyCounts != null">
+        buy_counts = #{record.buyCounts,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paidTime != null">
+        paid_time = #{record.paidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.scenicId != null">
+        scenic_id = #{record.scenicId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hotelId != null">
+        hotel_id = #{record.hotelId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update orders
+    set order_id = #{record.orderId,jdbcType=INTEGER},
+      order_num = #{record.orderNum,jdbcType=VARCHAR},
+      order_status = #{record.orderStatus,jdbcType=VARCHAR},
+      pay_price = #{record.payPrice,jdbcType=VARCHAR},
+      buy_counts = #{record.buyCounts,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      paid_time = #{record.paidTime,jdbcType=TIMESTAMP},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      scenic_id = #{record.scenicId,jdbcType=INTEGER},
+      hotel_id = #{record.hotelId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.foo.wetrip.bean.Oders">
+    update orders
+    <set>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="payPrice != null">
+        pay_price = #{payPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="buyCounts != null">
+        buy_counts = #{buyCounts,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paidTime != null">
+        paid_time = #{paidTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="scenicId != null">
+        scenic_id = #{scenicId,jdbcType=INTEGER},
+      </if>
+      <if test="hotelId != null">
+        hotel_id = #{hotelId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.foo.wetrip.bean.Oders">
+    update orders
+    set order_num = #{orderNum,jdbcType=VARCHAR},
+      order_status = #{orderStatus,jdbcType=VARCHAR},
+      pay_price = #{payPrice,jdbcType=VARCHAR},
+      buy_counts = #{buyCounts,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      paid_time = #{paidTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER},
+      scenic_id = #{scenicId,jdbcType=INTEGER},
+      hotel_id = #{hotelId,jdbcType=INTEGER}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+</mapper>

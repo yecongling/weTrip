@@ -1,0 +1,70 @@
+package com.foo.wetrip.service.impl;
+
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.bean.ScenicExample;
+import com.foo.wetrip.bean.ScenicType;
+import com.foo.wetrip.dao.PictureMapper;
+import com.foo.wetrip.dao.ScenicMapper;
+import com.foo.wetrip.dao.ScenicTypeMapper;
+import com.foo.wetrip.dao.VideoMapper;
+import com.foo.wetrip.service.IndexService;
+import com.foo.wetrip.util.ScenicUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/2/28 10:36
+ * @Description: com.foo.wetrip.service.impl
+ * weTrip
+ */
+
+@Service
+public class IndexServiceImpl implements IndexService {
+    @Autowired
+    private ScenicMapper scenicMapper;
+    @Autowired
+    private PictureMapper pictureMapper;
+    @Autowired
+    private ScenicTypeMapper scenicTypeMapper;
+    @Autowired
+    private VideoMapper videoMapper;
+
+    @Override
+    public List<ScenicUtil> selectAllScenicByScenicType(Integer typeId) {
+        ScenicExample scenicExample = new ScenicExample();
+        scenicExample.createCriteria().andScenicTypeIdEqualTo(typeId);
+        List<Scenic> scenicList = scenicMapper.selectByExample(scenicExample);
+        ArrayList<ScenicUtil> scenicUtils = new ArrayList<>();
+        for (Scenic scenic : scenicList) {
+            ScenicUtil scenicUtil = new ScenicUtil();
+            scenicUtil.setScenicId(scenic.getScenicId());
+            scenicUtil.setScenicTypeName(scenicTypeMapper.selectByPrimaryKey(scenic.getScenicTypeId()).getScenicTypeName());
+            scenicUtil.setEnable(scenic.getEnable());
+            scenicUtil.setScenicName(scenic.getScenicName());
+            scenicUtil.setDescription(scenic.getDescription());
+            scenicUtil.setAddress(scenic.getAddress());
+            scenicUtil.setPrice(scenic.getPrice());
+            scenicUtil.setPicturePath(pictureMapper.selectByPrimaryKey(scenic.getPictureId()).getPicturePath());
+            scenicUtil.setVideoPath(videoMapper.selectByPrimaryKey(scenic.getVideoId()).getVideoPath());
+            scenicUtils.add(scenicUtil);
+        }
+        ArrayList<ScenicUtil> list = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            list.add(scenicUtils.get(i));
+        }
+        return list;
+    }
+
+    @Override
+    public List<ScenicUtil> selectByScenicType() {
+        List<ScenicType> scenicTypes = scenicTypeMapper.selectByExample(null);
+        for (ScenicType scenicType : scenicTypes) {
+
+        }
+        return null;
+    }
+}

@@ -1,0 +1,107 @@
+package com.foo.wetrip.service.impl;
+
+import com.foo.wetrip.bean.Admin;
+import com.foo.wetrip.bean.AllOrderInfo;
+import com.foo.wetrip.bean.Oders;
+import com.foo.wetrip.bean.OdersExample;
+import com.foo.wetrip.dao.AdminMapper;
+import com.foo.wetrip.dao.OdersMapper;
+import com.foo.wetrip.service.AdminService;
+import com.foo.wetrip.util.OrderStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/2/25 16:05
+ * @Description: com.foo.wetrip.service.impl
+ * weTrip
+ */
+@Service
+public class AdminServiceImpl implements AdminService {
+    @Autowired
+    private AdminMapper adminMapper;
+
+    @Autowired
+    OdersMapper odersMapper;
+    @Override
+    public boolean adminLogin(String phone, String password) {
+        // 根据电话号码查找用户
+        Admin admin = adminMapper.selectByPhone(phone);
+        boolean flag = false;
+        // 判断用户是否存在
+        if (admin != null ) {
+            if (phone.equals(admin.getPhoneNum()) && password.equals(admin.getPassword())){
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public Admin selectByPhone(String phone){
+        Admin admin = adminMapper.selectByPhone(phone);
+        return admin;
+    }
+
+    @Override
+    public List<AllOrderInfo> selectAllOrder() {
+        List<AllOrderInfo> orderInfoList = new ArrayList<>();
+        //先查询出所有的订单
+        List<Oders> odersList = odersMapper.selectByExample(null);
+        for (Oders oders : odersList) {
+            //查询出订单状态名字
+            String orderStatus = oders.getOrderStatus();
+            String orderStatusName = "";
+            if (orderStatus.equals("10")) {
+                orderStatusName = OrderStatusEnum.WAIT_PAY.value;
+            }
+            if (orderStatus.equals("20")) {
+                orderStatusName = OrderStatusEnum.PAID.value;
+            }
+            if (orderStatus.equals("30")) {
+                orderStatusName = OrderStatusEnum.CANCELED.value;
+            }
+            if (orderStatus.equals("40")) {
+                orderStatus = OrderStatusEnum.CLOSED.value;
+            }
+            if (orderStatus.equals("50")) {
+                orderStatusName = OrderStatusEnum.REFUNDED.value;
+            }
+            String orderNum = oders.getOrderNum();
+            Integer buyCount = oders.getBuyCounts();
+            Date createTime = oders.getCreateTime();
+            Date paidTime = oders.getPaidTime();
+            String payPrice = oders.getPayPrice();
+            AllOrderInfo allOrderInfo = new AllOrderInfo(orderNum, orderStatusName, buyCount, createTime, paidTime,payPrice);
+            orderInfoList.add(allOrderInfo);
+        }
+        return orderInfoList;
+    }
+
+    @Override
+    public void adminAgree(String orderNum) {
+        //根据订单编号查询到该订单的信息
+        OdersExample odersExample = new OdersExample();
+        OdersExample.Criteria criteria = odersExample.createCriteria();
+        //创造查询条件
+        criteria.andOrderNumEqualTo(orderNum);
+        List<Oders> odersList = odersMapper.selectByExample(odersExample);
+        Oders oders = new Oders();
+        //下面做非空判断
+        if(odersList.size()!=0){
+            oders = odersList.get(0);
+            String orderStatus = oders.getOrderStatus();
+            if (orderStatus.equals(OrderStatusEnum.CANCELED.key)) {
+                orderStatus = OrderStatusEnum.REFUNDED.key;
+                criteria.andOrderNumEqualTo(orderNum);
+                oders.setOrderStatus(orderStatus);
+                odersMapper.updateByExampleSelective(oders, odersExample);
+            }
+        }
+    }
+}

@@ -1,0 +1,96 @@
+package com.foo.wetrip.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.foo.wetrip.bean.Passengers;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.dao.PassengersMapper;
+import com.foo.wetrip.dao.ScenicMapper;
+import com.foo.wetrip.util.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * 游客填写内容的界面
+ */
+@Controller
+public class TravelerController {
+
+    @Autowired
+    PassengersMapper passengersMapper;
+    @Autowired
+    ScenicMapper scenicMapper;
+
+    @RequestMapping("/traveler")
+    public void insert(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+        // 得到出行人数
+        Integer tripNum = Integer.valueOf(request.getParameter("tripNum"));
+        // 人数存储到session中
+        session.setAttribute("tripNum", tripNum);
+        // 得到出行时间
+        Date tripTime = null;
+        try {
+            tripTime = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("tripTime"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        // 获得旅客的名字
+        String[] passengerNames = request.getParameterValues("passengerName");
+        // 获得旅客的性别
+        String[] genders = request.getParameterValues("gender");
+        // 获得旅客的身份证号码
+        String[] idCard = request.getParameterValues("idCard");
+        // 获得旅客的电话信息
+        String[] phones = request.getParameterValues("phoneNum");
+
+        // 获得用户的id
+        // String phoneNum1 = (String) session.getAttribute("phoneNum");
+        // Users users = usersService.selectByPhone(phoneNum1);
+        for (int i = 0; i < tripNum; i++) {
+            // 网实体中封装数据
+            Passengers passengers = new Passengers();
+            passengers.setPhoneNum(phones[i]);
+            passengers.setPassengerName(passengerNames[i]);
+            passengers.setGender(genders[i]);
+            passengers.setIdCard(idCard[i]);
+            passengers.setTripTime(tripTime);
+            passengers.setEmail(null);
+            // passengers.setUserId(users.getUserId());
+            passengers.setUserId(1);
+            passengersMapper.insert(passengers);
+        }
+        JsonResult result = new JsonResult(JsonResult.SUCCESS, "成功", true);
+        response.getWriter().println(JSON.toJSONString(result));
+
+    }
+
+    /**
+     * 查出旅客选的哪个景区
+     * @param request
+     * @return
+     */
+    @GetMapping("/ha")
+    public ModelAndView scenic(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        Integer scenicId = Integer.valueOf(request.getParameter("scenicId"));
+        //Integer scenicId = 1;
+        //从数据库查询到经典信息,并传到页面
+        Scenic scenic = scenicMapper.selectByPrimaryKey(scenicId);
+        System.out.println(scenic + "=========================");
+        modelAndView.addObject("scenic", scenic);
+        modelAndView.setViewName("traveler");
+        return modelAndView;
+    }
+
+
+}

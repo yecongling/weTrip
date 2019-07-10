@@ -1,0 +1,69 @@
+package com.foo.wetrip.service.impl;
+
+import com.alibaba.fastjson.JSON;
+import com.foo.wetrip.bean.Scenic;
+import com.foo.wetrip.bean.ScenicType;
+import com.foo.wetrip.dao.ScenicTypeMapper;
+import com.foo.wetrip.service.ScenicService;
+import com.foo.wetrip.util.ScenicUtil;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+/**
+ * @Author: Wonderland
+ * @Date: 2019/2/26 11:10
+ * @Description: com.foo.wetrip.service.impl
+ * weTrip
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring.xml"})
+public class ScenicServiceImplTest {
+    @Autowired
+    private ScenicService scenicService;
+
+    @Test
+    public void getScenicById() {
+        Scenic scenicById = scenicService.getScenicById(1);
+        System.out.println(JSON.toJSONString(scenicById, true));
+    }
+
+    @Test
+    public void selectAllScenic() {
+        List<ScenicUtil> scenicUtilList = scenicService.selectAllScenic();
+        for (ScenicUtil scenicUtil : scenicUtilList) {
+            System.out.println(JSON.toJSONString(scenicUtil, true));
+        }
+    }
+
+
+    @Test
+    public void updateScenicStatus(){
+        scenicService.updateScenicStatus(26);
+    }
+
+    @Test
+    public void updateScenic(){
+        scenicService.updateScenic(27,"2","2","2","2");
+    }
+
+
+
+    @Test
+    public void testJson(){
+        System.out.println(JSON.toJSONString("200",true));
+    }
+
+
+    @Test
+    public void testSelectAllScenicType(){
+        List<ScenicType> scenicTypes = scenicService.selectAllScenicType();
+        System.out.println(JSON.toJSONString(scenicTypes,true));
+    }
+}

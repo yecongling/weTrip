@@ -1,0 +1,26 @@
+package com.foo.wetrip.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class TestController {
+    @RequestMapping(value = "/ticketSearch")
+    public String Test() {
+        return "TicketSearch";
+    }
+
+
+
+
+
+
+    @RequestMapping(value = "/teamTicket")
+    public String Test1() {
+        return "teamTicket";
+    }
+
+
+
+
+}
